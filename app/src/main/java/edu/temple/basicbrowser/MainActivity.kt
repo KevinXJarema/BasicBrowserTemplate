@@ -21,12 +21,24 @@ class MainActivity : AppCompatActivity() {
         goButton = findViewById(R.id.goButton)
         webView = findViewById(R.id.webView)
 
-        // Allow your browser to intercept hyperlink clicks
         webView.webViewClient = object: WebViewClient() {
             override fun onPageFinished(view: WebView?, url: String?) {
                 super.onPageFinished(view, url)
             }
         }
 
+        goButton.setOnClickListener {
+            val enteredUrl: String = urlEditText.text.toString()
+
+            // Check if the URL contains a valid protocol (e.g., "http://" or "https://")
+            val urlWithProtocol = if (enteredUrl.startsWith("http://") || enteredUrl.startsWith("https://")) {
+                enteredUrl
+            } else {
+                "https://$enteredUrl"
+            }
+
+            // Load the URL in the WebView
+            webView.loadUrl(urlWithProtocol)
+        }
     }
 }
